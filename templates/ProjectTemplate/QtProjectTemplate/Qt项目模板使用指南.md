@@ -18,27 +18,21 @@
 
 - `-appver <str>`：新项目的应用版本。默认值为项目版本。
 
-- `-author <str>`$^①$：新项目作者名。默认值为空。
+- `-author <str>`：新项目作者名。默认值为 `Unknown`。
 
-- `-email <str>`$^①$：新项目的电子邮箱联系方式。默认值为空。
+- `-email <str>`：新项目的电子邮箱联系方式。默认值为空。
 
-- `-copyright <str>`$^①$：新项目的版权信息文本。默认值取决于项目作者名。
+- `-copyright <str>`：新项目的版权信息文本。默认值取决于项目作者名。
 
-  如果项目作者名值为空，则此值为空。否则此值为 `Copyright (c) $Year $ProjectAuthor`，其中 `$Year` 将会被替换为创建项目时的年份，`ProjectAuthor` 将会被替换为通过 `-author` 参数设置的项目作者名。
+  如果项目作者名值为空，则此值为空。否则此值为 `Copyright (c) $Year $ProjectAuthor`，其中 `$Year` 将会被替换为创建项目时的年份，`$ProjectAuthor` 将会被替换为通过 `-author` 参数设置的项目作者名。
 
 - `-cppver <num>`：新项目使用的C++标准。默认值为 `17`。
 
-- `-appico <filepath>`$^②$：新项目的的应用图标（`ICO` 格式）。默认值为空。
-
-- `-appicns <filepath>`$^②$：新项目的的应用图标（`ICNS` 格式）。默认值为空。
+- `-appicon <filepath>`$^①$：新项目的的应用图标（`PNG` 格式，推荐大小为 `1024*1024`）。默认值为空。
 
 ### 引注
 
 #### ①
-
-如果值为空，则不会生成相应的CMake变量。
-
-#### ②
 
 - 如果给定文件不存在则回退至空值情况。
 
