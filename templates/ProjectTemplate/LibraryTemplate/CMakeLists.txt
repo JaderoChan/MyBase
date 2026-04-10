@@ -64,6 +64,8 @@ elseif(APPLE)
     set(PLATFORM_NAME apple)
 elseif(LINUX)
     set(PLATFORM_NAME linux)
+else()
+    message(FATAL_ERROR "${MSG_PREFIX} Unsupported platform.")
 endif()
 
 if(PLATFORM_NAME)
