@@ -9,6 +9,9 @@ insert_final_newline = true
 tab_width = 4
 trim_trailing_whitespace = true
 
+[Makefile]
+indent_style = tab
+
 [*.yaml,*.yml]
 indent_size = 2
 tab_width = 2
