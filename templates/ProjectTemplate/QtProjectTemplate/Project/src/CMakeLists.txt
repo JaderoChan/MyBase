@@ -91,7 +91,7 @@ if(WIN32)
     configure_file(
         ${CMAKE_TEMPLATES_DIR}/app.manifest.in
         ${APP_MANIFEST}
-        @NOLY
+        @ONLY
     )
 
     # 是否将 app.manifest 文件加入到资源文件中。
