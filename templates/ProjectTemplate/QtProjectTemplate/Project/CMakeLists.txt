@@ -24,9 +24,8 @@ set(3RDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 FetchContent_Declare(
     easy_translate
     SOURCE_DIR ${3RDPARTY_DIR}/easy_translate
-    OVERRIDE_FIND_PACKAGE
 )
-find_package(easy_translate REQUIRED)
+FetchContent_MakeAvailable(easy_translate)
 
 ###############
 # 设置程序信息 #
