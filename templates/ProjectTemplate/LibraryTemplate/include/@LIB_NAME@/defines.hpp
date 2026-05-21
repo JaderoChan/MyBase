@@ -7,8 +7,18 @@
     #define @LIBNAME@_WIN
 #elif defined(__APPLE__)
     #define @LIBNAME@_APPLE
+    #include <TargetConditionals.h>
+    #if TARGET_OS_MAC && !TARGET_OS_IPHONE
+        #define @LIBNAME@_MACOS
+    #elif TARGET_OS_IPHONE
+        #define @LIBNAME@_IOS
+    #else
+        #error "Unsupported platform"
+    #endif // TARGET_OS_MAC && !TARGET_OS_IPHONE
 #elif defined(__linux__)
     #define @LIBNAME@_LINUX
+#elif defined(__ANDROID__)
+    #define @LIBNAME@_ANDROID
 #else
     #error "Unsupported platform"
 #endif // _WIN32

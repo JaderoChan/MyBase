@@ -109,7 +109,11 @@ if(WIN32)
     )
     target_sources(${PROJECT_NAME} PRIVATE ${RC_FILE})
 elseif(APPLE)
-    # Apple
+    if(NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        message(FATAL_ERROR "Unsupported platform.")
+    endif()
+
+    # MacOS
     set(APP_ICON ${APP_ICON_DIR}/app.icns)
 
     # Info Plist Strings
@@ -162,8 +166,10 @@ elseif(APPLE)
         MACOSX_PACKAGE_LOCATION "Resources/languages"
     )
     target_sources(${PROJECT_NAME} PRIVATE ${LANG_FILES})
-else()
+elseif(LINUX)
     # TODO
+else()
+    message(FATAL_ERROR "Unsupported platform.")
 endif()
 
 #################
@@ -171,7 +177,7 @@ endif()
 #################
 
 # 复制语言文件至输出目录。
-if(NOT APPLE)
+if(WIN32 OR LINUX)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
@@ -184,10 +190,12 @@ option(DEPLOYQT_AFTER_BUILD "Execute *deployqt program to install Qt dependencie
 if(DEPLOYQT_AFTER_BUILD)
     if(WIN32)
         set(DEPLOYQT windeployqt)
-    elseif(APPLE)
+    elseif(APPLE AND CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         set(DEPLOYQT macdeployqt)
-    else()
+    elseif(LINUX)
         # TODO
+    else()
+        message(FATAL_ERROR "Unsupported platform.")
     endif()
 
     add_custom_command(
@@ -201,7 +209,7 @@ endif()
 
 # MacOS DMG 打包
 option(CREATE_DMG "Create DMG for MacOS, create-dmg is required." OFF)
-if(APPLE AND CREATE_DMG)
+if(APPLE AND CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CREATE_DMG)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${SCRIPTS_DIR}/create_dmg.sh
