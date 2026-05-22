@@ -14,7 +14,9 @@ int main(int argc, char* argv[])
     a.setOrganizationName(APP_ORGANIZATION);
     a.setApplicationName(APP_TITLE);
     a.setApplicationVersion(APP_VERSION);
+#ifndef Q_OS_MAC
     a.setWindowIcon(getLogoIcon());
+#endif
 
     // 设置语言
     {
