@@ -4,8 +4,11 @@
 
 enum Language : unsigned char
 {
-    LANG_EN = 0,
-    LANG_ZH
+    LANG_EN     = 0,
+    LANG_ZH,
+
+    LANG_FIRST  = LANG_EN,
+    LANG_LAST   = LANG_ZH
 };
 
 QString getLanguageStringId(Language lang);
