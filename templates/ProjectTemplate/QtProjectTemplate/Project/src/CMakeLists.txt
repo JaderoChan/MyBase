@@ -189,22 +189,24 @@ endif()
 option(DEPLOYQT_AFTER_BUILD "Execute *deployqt program to install Qt dependencies after build." OFF)
 if(DEPLOYQT_AFTER_BUILD)
     if(WIN32)
-        set(DEPLOYQT windeployqt)
-    elseif(APPLE AND CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-        set(DEPLOYQT macdeployqt)
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND windeployqt
+            $<$<CONFIG:Debug>:--debug>$<$<NOT:$<CONFIG:Debug>>:--release>
+            $<TARGET_FILE:${PROJECT_NAME}>
+        )
+    elseif( APPLE AND CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND macdeployqt
+            $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
+            -codesign=-
+        )
     elseif(LINUX)
         # TODO
     else()
         message(FATAL_ERROR "Unsupported platform.")
     endif()
-
-    add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${DEPLOYQT}
-        $<$<CONFIG:Debug>:--debug>$<$<NOT:$<CONFIG:Debug>>:--release>
-        $<TARGET_FILE:${PROJECT_NAME}>
-        $<$<PLATFORM_ID:Darwin>:-codesign=->
-    )
 endif()
 
 # MacOS DMG 打包
@@ -212,9 +214,9 @@ option(CREATE_DMG "Create DMG for MacOS, create-dmg is required." OFF)
 if(APPLE AND CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CREATE_DMG)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${SCRIPTS_DIR}/create_dmg.sh
+        COMMAND /bin/sh ${SCRIPTS_DIR}/create_dmg.sh
         ${PROJECT_NAME}
         ${APP_ICON}
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        $<PATH:GET_PARENT_PATH,$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>>
     )
 endif()
