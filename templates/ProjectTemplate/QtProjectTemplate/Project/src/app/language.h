@@ -2,7 +2,7 @@
 
 #include <qstring.h>
 
-enum Language : unsigned char
+enum Language : int
 {
     LANG_EN     = 0,
     LANG_ZH,
