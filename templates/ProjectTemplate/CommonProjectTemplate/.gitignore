@@ -17,6 +17,7 @@ install/
 *.so
 *.lib
 *.dll
+*.bin
 *.exe
 *.pdb
 
