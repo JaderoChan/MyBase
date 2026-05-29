@@ -1,5 +1,6 @@
 .vscode/
 .vs/
+.venv/
 __pycache__/
 
 build/
