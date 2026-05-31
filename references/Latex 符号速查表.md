@@ -90,7 +90,7 @@
 | $\delta$ | delta（德尔塔） | `\delta` | - |
 | $\epsilon$ | epsilon（艾普西隆） | `\epsilon` | - |
 | $\zeta$ | zeta（泽塔） | `\zeta` | - |
-| $\eta$ | eta（艾塔） | `\eta` | - |
+| $\eta$ | eta（伊塔） | `\eta` | - |
 | $\theta$ | theta（西塔） | `\theta` | - |
 | $\iota$ | iota（约塔） | `\iota` | - |
 | $\kappa$ | kappa（卡帕） | `\kappa` | - |

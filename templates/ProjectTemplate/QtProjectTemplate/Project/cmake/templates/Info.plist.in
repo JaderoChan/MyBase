@@ -34,10 +34,13 @@
     <string>@APP_COPYRIGHT_TEXT@</string>
 
     <!-- 本地化支持 -->
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+
     <key>CFBundleLocalizations</key>
     <array>
         <string>en</string>
-        <string>zh_CN</string>
+        <string>zh-Hans</string>
     </array>
 </dict>
 </plist>
