@@ -120,7 +120,7 @@ elseif(APPLE)
     set(
         INFO_PLIST_STRINGS_NAMES
         en.lproj
-        zh_CN.lproj
+        zh-Hans.lproj
     )
     foreach(INFO_PLIST_STRINGS_NAME IN LISTS INFO_PLIST_STRINGS_NAMES)
         configure_file(
