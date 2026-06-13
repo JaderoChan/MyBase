@@ -23,7 +23,13 @@
 - Markdown 文档空格标准
 - 文本尾随句点标准
 - 小标题高亮范围标准
-- 纯 AI 生成内容标记标准（起草中）
+- 纯 AI 生成内容标记标准
+
+> 这些规范文档也可粗略地作为 AI Skill 使用，向 AI 提供上下文约束。
+
+### 🤖 skills — AI Skills
+
+供 AI 使用的 Skill 文档，用于引导 AI 在特定场景下遵循特定行为规范。
 
 ### 📋 templates — 模板
 
@@ -31,6 +37,7 @@
 
 - **FileTemplate**：通用文件模板（许可证等）
 - **ProjectTemplate**：项目脚手架模板
+
   - `CommonProjectTemplate`：通用项目模板
   - `HeaderOnlyLibraryTemplate`：Header-Only 库模板
   - `LibraryTemplate`：C++ 库模板
@@ -41,3 +48,11 @@
 常用工具脚本：
 
 - `create_app_icons`：应用图标批量生成脚本（支持 Windows/macOS）
+
+### 📝 todos — 待办清单（私密子仓库）
+
+存放个人各类待办清单。本目录为私密 Git 子仓库，仅对账号所有者可见。
+
+### ✍️ writing — 文稿随记（私密子仓库）
+
+存放个人文学性文稿、随笔、随记等内容。本目录为私密 Git 子仓库，仅对账号所有者可见。
