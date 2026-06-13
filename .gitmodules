@@ -1,3 +1,6 @@
 [submodule "todos"]
 	path = todos
 	url = https://github.com/JaderoChan/MyTodos
+[submodule "writing"]
+	path = writing
+	url = https://github.com/JaderoChan/MyWriting
