@@ -46,6 +46,10 @@ configure_file(
     @ONLY
 )
 
+# Headers
+file(GLOB HEADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
+list(APPEND HEADERS ${CONFIG_HEADER_PATH})
+
 # Sources
 file(GLOB SRCS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 # TODO: Add other subdirectory sources.
@@ -71,6 +75,7 @@ endif()
 file(GLOB PLATFORM_SRCS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/${PLATFORM_NAME}/*.cpp)
 
 list(APPEND SRCS ${PLATFORM_SRCS})
+set(${PROJECT_SOURCES} ${HEADERS} ${SRCS})
 
 #########
 # Build #
@@ -78,11 +83,11 @@ list(APPEND SRCS ${PLATFORM_SRCS})
 
 if(@LIBNAME@_BUILD_SHARED)
     message(STATUS "${MSG_PREFIX} Shared library will be built.")
-    add_library(${PROJECT_NAME} SHARED ${SRCS})
+    add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCES})
     target_compile_definitions(${PROJECT_NAME} PRIVATE @LIBNAME@_BUILD_SHARED)
 else()
     message(STATUS "${MSG_PREFIX} Static library will be built.")
-    add_library(${PROJECT_NAME} STATIC ${SRCS})
+    add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES})
 endif()
 
 # Set library alias.
@@ -125,7 +130,7 @@ target_include_directories(
 
 install(
     TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}
+    EXPORT  ${PROJECT_NAME}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

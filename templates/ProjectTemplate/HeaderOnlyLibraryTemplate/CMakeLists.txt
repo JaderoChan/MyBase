@@ -43,7 +43,7 @@ list(APPEND HEADERS ${CONFIG_HEADER_PATH})
 # Make header-only library #
 ############################
 
-add_library(${PROJECT_NAME} INTERFACE)
+add_library(${PROJECT_NAME} INTERFACE ${HEADERS})
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 ##########################
@@ -79,7 +79,7 @@ target_include_directories(
 
 install(
     TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}
+    EXPORT  ${PROJECT_NAME}
 )
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/@LIBNAME@ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
