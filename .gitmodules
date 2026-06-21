@@ -4,3 +4,6 @@
 [submodule "writings"]
 	path = writings
 	url = https://github.com/JaderoChan/MyWritings
+[submodule "my_algorithms"]
+	path = my_algorithms
+	url = https://github.com/JaderoChan/MyAlgorithms
