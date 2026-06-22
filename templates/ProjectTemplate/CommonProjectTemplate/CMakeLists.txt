@@ -10,7 +10,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-# 头文件（可用于在 Visual Studio IDE 的项目文件树中显示头文件）
+# 头文件（可用于在 Visual Studio 等 IDE 的项目文件树中显示头文件）
 file(
     GLOB_RECURSE HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h

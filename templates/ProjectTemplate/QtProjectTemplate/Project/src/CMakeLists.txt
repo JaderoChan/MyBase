@@ -9,7 +9,7 @@ configure_file(
     @ONLY
 )
 
-# 头文件（可用于在 Visual Studio IDE 的项目文件树中显示头文件）
+# 头文件（可用于在 Visual Studio 等 IDE 的项目文件树中显示头文件）
 file(
     GLOB_RECURSE HEADERS CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
