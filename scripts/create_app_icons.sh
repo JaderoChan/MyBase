@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+# PAIGC
+
 set -eu
 
 usage() {

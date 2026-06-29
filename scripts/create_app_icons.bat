@@ -1,3 +1,5 @@
+:: PAIGC
+
 @echo off
 setlocal EnableExtensions
 
