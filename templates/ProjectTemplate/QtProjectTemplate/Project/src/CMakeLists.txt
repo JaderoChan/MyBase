@@ -113,7 +113,7 @@ elseif(APPLE)
         message(FATAL_ERROR "Unsupported platform.")
     endif()
 
-    # MacOS
+    # macOS
     set(APP_ICON ${APP_ICON_DIR}/app.icns)
 
     # Info Plist Strings
@@ -209,8 +209,8 @@ if(DEPLOYQT_AFTER_BUILD)
     endif()
 endif()
 
-# MacOS DMG 打包
-option(CREATE_DMG "Create DMG for MacOS, create-dmg is required." OFF)
+# macOS DMG 打包
+option(CREATE_DMG "Create DMG for macOS, create-dmg is required." OFF)
 if(APPLE AND CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CREATE_DMG)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
