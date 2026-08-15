@@ -51,9 +51,9 @@ bool setLanguage(Language lang)
 {
     {
         DirectoryScope dirScope(APP_RESOURCES_DIRPATH);
-        easytr::setLanguages(easytr::Languages::fromFile(APP_LANG_FILEPATH));
+        easytr::setLanguages(easytr::Languages::fromFile(APP_LANGMAP_FILEPATH));
     }
-    
+
     if (easytr::languages().empty())
     {
         debugOut(qWarning(), "[Language] Failed to load languages or languages list is empty.");
