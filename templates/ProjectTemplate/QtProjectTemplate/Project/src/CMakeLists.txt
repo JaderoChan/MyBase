@@ -54,13 +54,6 @@ target_link_libraries(
 # 配置生成目标 #
 ###############
 
-set_target_properties(
-    ${PROJECT_NAME} PROPERTIES
-    AUTOMOC ON
-    AUTOUIC ON
-    AUTORCC ON
-)
-
 # 如果为 MSVC 编译器，显式指定编码，防止乱码情况。
 if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /utf-8)
