@@ -9,8 +9,8 @@ set(MSG_PREFIX "[@LIB_MSG_PREFIX@]")
 include(GNUInstallDirs)
 
 # Set the CMAKE_BUILD_TYPE default value to Release.
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
+if(NOT DEFINED CMAKE_BUILD_TYPE OR NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build with Release when not build type be specified." FORCE)
 endif()
 
 # Projects cannot be built in the same-level directory of the source code.
@@ -31,7 +31,7 @@ endif()
 # Options #
 ###########
 
-option(@LIBNAME@_BUILD_SHARED "Build shared library" OFF)
+option(@LIBNAME@_BUILD_SHARED "Build shared library" ON)
 set(@LIBNAME@_SHARED ${@LIBNAME@_BUILD_SHARED})
 
 ########################
