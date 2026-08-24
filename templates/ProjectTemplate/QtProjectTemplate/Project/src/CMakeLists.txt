@@ -4,33 +4,33 @@
 
 # 配置 config 头文件。
 configure_file(
-    ${CMAKE_TEMPLATES_DIR}/config.h.in
-    ${CMAKE_CURRENT_BINARY_DIR}/include/config.h
+    "${CMAKE_TEMPLATES_DIR}/config.h.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/config.h"
     @ONLY
 )
 
 # 头文件（可用于在 Visual Studio 等 IDE 的项目文件树中显示头文件）
 file(
     GLOB_RECURSE HEADERS CONFIGURE_DEPENDS
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
 # 源文件
 file(
     GLOB_RECURSE SRCS CONFIGURE_DEPENDS
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 # UI 文件
-file(GLOB_RECURSE UIS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
+file(GLOB_RECURSE UIS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*.ui")
 # QRC 文件
-set(QRC ${RESOURCES_DIR}/app.qrc)
-set(PROJECT_SOURCES ${HEADERS} ${SRCS} ${UIS} ${QRC})
+set(QRC "${RESOURCES_DIR}/app.qrc")
+set(PROJECT_SOURCES "${HEADERS}" "${SRCS}" "${UIS}" "${QRC}")
 
 ###########
 # 构建程序 #
 ###########
 
 qt_standard_project_setup()
-qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+qt_add_executable(${PROJECT_NAME} "${PROJECT_SOURCES}")
 
 ###########
 # 配置依赖 #
@@ -39,8 +39,8 @@ qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 # 配置头文件路径。
 target_include_directories(
     ${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}/include
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_BINARY_DIR}/include"
 )
 
 # 链接依赖库。
@@ -78,12 +78,12 @@ target_compile_definitions(
 # 配置应用资源/属性。
 if(WIN32)
     # Windows
-    set(APP_ICON ${APP_ICON_DIR}/app.ico)
+    set(APP_ICON "${APP_ICON_DIR}/app.ico")
 
-    set(APP_MANIFEST ${CMAKE_CURRENT_BINARY_DIR}/app.manifest)
+    set(APP_MANIFEST "${CMAKE_CURRENT_BINARY_DIR}/app.manifest")
     configure_file(
-        ${CMAKE_TEMPLATES_DIR}/app.manifest.in
-        ${APP_MANIFEST}
+        "${CMAKE_TEMPLATES_DIR}/app.manifest.in"
+        "${APP_MANIFEST}"
         @ONLY
     )
 
@@ -94,20 +94,20 @@ if(WIN32)
         target_link_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/MANIFEST:NO>)
     endif()
 
-    set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/app.rc)
+    set(RC_FILE "${CMAKE_CURRENT_BINARY_DIR}/app.rc")
     configure_file(
-        ${CMAKE_TEMPLATES_DIR}/app.rc.in
-        ${RC_FILE}
+        "${CMAKE_TEMPLATES_DIR}/app.rc.in"
+        "${RC_FILE}"
         @ONLY
     )
-    target_sources(${PROJECT_NAME} PRIVATE ${RC_FILE})
+    target_sources(${PROJECT_NAME} PRIVATE "${RC_FILE}")
 elseif(APPLE)
     if(NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         message(FATAL_ERROR "Unsupported platform.")
     endif()
 
     # macOS
-    set(APP_ICON ${APP_ICON_DIR}/app.icns)
+    set(APP_ICON "${APP_ICON_DIR}/app.icns")
 
     # Info Plist Strings
     set(
@@ -117,48 +117,48 @@ elseif(APPLE)
     )
     foreach(INFO_PLIST_STRINGS_NAME IN LISTS INFO_PLIST_STRINGS_NAMES)
         configure_file(
-            ${CMAKE_TEMPLATES_DIR}/InfoPlistStrings/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings.in
-            ${CMAKE_CURRENT_BINARY_DIR}/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings
+            "${CMAKE_TEMPLATES_DIR}/InfoPlistStrings/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings.in"
+            "${CMAKE_CURRENT_BINARY_DIR}/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings"
             @ONLY
         )
     endforeach()
     foreach(INFO_PLIST_STRINGS_NAME IN LISTS INFO_PLIST_STRINGS_NAMES)
-        set(INFO_PLIST_STRINGS_FILE ${CMAKE_CURRENT_BINARY_DIR}/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings)
+        set(INFO_PLIST_STRINGS_FILE "${CMAKE_CURRENT_BINARY_DIR}/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings")
         set_source_files_properties(
-            ${INFO_PLIST_STRINGS_FILE} PROPERTIES
+            "${INFO_PLIST_STRINGS_FILE}" PROPERTIES
             MACOSX_PACKAGE_LOCATION "Resources/${INFO_PLIST_STRINGS_NAME}"
         )
-        target_sources(${PROJECT_NAME} PRIVATE ${INFO_PLIST_STRINGS_FILE})
+        target_sources(${PROJECT_NAME} PRIVATE "${INFO_PLIST_STRINGS_FILE}")
     endforeach()
 
     # Info Plist
-    set(MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
+    set(MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/Info.plist")
     configure_file(
-        ${CMAKE_TEMPLATES_DIR}/Info.plist.in
-        ${MACOSX_BUNDLE_INFO_PLIST}
+        "${CMAKE_TEMPLATES_DIR}/Info.plist.in"
+        "${MACOSX_BUNDLE_INFO_PLIST}"
         @ONLY
     )
 
     # 应用图标
     set_source_files_properties(
-        ${APP_ICON} PROPERTIES
+        "${APP_ICON}" PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources"
     )
-    target_sources(${PROJECT_NAME} PRIVATE ${APP_ICON})
+    target_sources(${PROJECT_NAME} PRIVATE "${APP_ICON}")
 
     set_target_properties(
         ${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE ON
-        MACOSX_BUNDLE_INFO_PLIST ${MACOSX_BUNDLE_INFO_PLIST}
+        MACOSX_BUNDLE_INFO_PLIST "${MACOSX_BUNDLE_INFO_PLIST}"
     )
 
     # 语言文件
-    file(GLOB LANG_FILES CONFIGURE_DEPENDS ${LANGUAGES_DIR}/*)
+    file(GLOB LANG_FILES CONFIGURE_DEPENDS "${LANGUAGES_DIR}/*")
     set_source_files_properties(
-        ${LANG_FILES} PROPERTIES
+        "${LANG_FILES}" PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources/languages"
     )
-    target_sources(${PROJECT_NAME} PRIVATE ${LANG_FILES})
+    target_sources(${PROJECT_NAME} PRIVATE "${LANG_FILES}")
 elseif(LINUX)
     # TODO
 else()
@@ -174,7 +174,7 @@ if(WIN32 OR LINUX)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
-        ${LANGUAGES_DIR} $<TARGET_FILE_DIR:${PROJECT_NAME}>/languages
+        "${LANGUAGES_DIR}" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/languages"
     )
 endif()
 
@@ -186,14 +186,14 @@ if(DEPLOYQT_AFTER_BUILD)
             TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND windeployqt
             $<$<CONFIG:Debug>:--debug>$<$<NOT:$<CONFIG:Debug>>:--release>
-            $<TARGET_FILE:${PROJECT_NAME}>
+            "$<TARGET_FILE:${PROJECT_NAME}">
         )
     elseif(APPLE AND CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         add_custom_command(
             TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND macdeployqt
             $<$<CONFIG:Debug>:--debug>$<$<NOT:$<CONFIG:Debug>>:--release>
-            $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
+            "$<TARGET_BUNDLE_DIR:${PROJECT_NAME}"">
             -codesign=-
         )
     elseif(LINUX)
@@ -208,9 +208,9 @@ option(CREATE_DMG "Create DMG for macOS, create-dmg is required." OFF)
 if(APPLE AND CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CREATE_DMG)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND /bin/sh ${SCRIPTS_DIR}/create_dmg.sh
+        COMMAND /bin/sh "${SCRIPTS_DIR}/create_dmg.sh"
         ${PROJECT_NAME}
-        ${APP_ICON}
-        $<PATH:GET_PARENT_PATH,$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>>
+        "${APP_ICON}"
+        "$<PATH:GET_PARENT_PATH,$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>>"
     )
 endif()

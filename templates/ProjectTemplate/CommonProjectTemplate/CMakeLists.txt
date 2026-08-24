@@ -13,20 +13,20 @@ endif()
 # 头文件（可用于在 Visual Studio 等 IDE 的项目文件树中显示头文件）
 file(
     GLOB_RECURSE HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp"
 )
 # 源文件
 file(
     GLOB_RECURSE SRCS
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
 )
 
-set(PROJECT_SOURCES ${HEADERS} ${SRCS})
+set(PROJECT_SOURCES "${HEADERS}" "${SRCS}")
 
 # 配置头文件路径
 target_include_directories(
     ${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    "${CMAKE_CURRENT_SOURCE_DIR}"
 )

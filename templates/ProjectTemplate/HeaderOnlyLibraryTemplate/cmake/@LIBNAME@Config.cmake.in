@@ -5,9 +5,9 @@ include(CMakeFindDependencyMacro)
 # Example. TODO: remove this in release version.
 # find_dependency(Threads)
 
-include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake)
+include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake")
 
-set_and_check(@PROJECT_NAME@_INCLUDE_DIRS @PACKAGE_CMAKE_INSTALL_INCLUDEDIR@)
+set_and_check(@PROJECT_NAME@_INCLUDE_DIRS "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 set(@PROJECT_NAME@_VERSION @PROJECT_VERSION@)
 set(@PROJECT_NAME@_FOUND TRUE)
 
