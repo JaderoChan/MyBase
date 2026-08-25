@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.26)
 
+# TODO
 project(@LIBNAME@ VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -10,7 +11,7 @@ include(GNUInstallDirs)
 
 # Set the CMAKE_BUILD_TYPE default value to Release.
 if(NOT DEFINED CMAKE_BUILD_TYPE OR NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build with Release when not build type be specified." FORCE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build with Release when not build type be specified." FORCE)
 endif()
 
 # Projects cannot be built in the same-level directory of the source code.
@@ -39,20 +40,22 @@ set(@LIBNAME@_SHARED ${@LIBNAME@_BUILD_SHARED})
 ########################
 
 # Configure config header.
-set(CONFIG_HEADER_PATH "${CMAKE_CURRENT_BINARY_DIR}/include/@LIBNAME@/config.hpp")
+set(CONFIG_HEADER_PATH ${CMAKE_CURRENT_BINARY_DIR}/include/@LIBNAME@/config.hpp)
 configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in"
-    "${CONFIG_HEADER_PATH}"
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
+    ${CONFIG_HEADER_PATH}
     @ONLY
 )
 
+# TODO
 # Headers
-file(GLOB HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
-list(APPEND HEADERS "${CONFIG_HEADER_PATH}")
+set(HEADERS
+    ${CONFIG_HEADER_PATH}
+)
 
 # Sources
-file(GLOB SRCS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-# TODO: Add other subdirectory sources.
+set(SRCS
+)
 
 if(WIN32)
     set(PLATFORM_NAME "win")
@@ -72,10 +75,12 @@ else()
     message(FATAL_ERROR "${MSG_PREFIX} Unsupported platform.")
 endif()
 
-file(GLOB PLATFORM_SRCS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/${PLATFORM_NAME}/*.cpp")
+# TODO
+set(PLATFORM_SRCS
+)
+list(APPEND SRCS ${PLATFORM_SRCS})
 
-list(APPEND SRCS "${PLATFORM_SRCS}")
-set(${PROJECT_SOURCES} "${HEADERS}" "${SRCS}")
+set(${PROJECT_SOURCES} ${HEADERS} ${SRCS})
 
 #########
 # Build #
@@ -83,11 +88,11 @@ set(${PROJECT_SOURCES} "${HEADERS}" "${SRCS}")
 
 if(@LIBNAME@_BUILD_SHARED)
     message(STATUS "${MSG_PREFIX} Shared library will be built.")
-    add_library(${PROJECT_NAME} SHARED "${PROJECT_SOURCES}")
+    add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCES})
     target_compile_definitions(${PROJECT_NAME} PRIVATE @LIBNAME@_BUILD_SHARED)
 else()
     message(STATUS "${MSG_PREFIX} Static library will be built.")
-    add_library(${PROJECT_NAME} STATIC "${PROJECT_SOURCES}")
+    add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES})
 endif()
 
 # Set library alias.
@@ -111,18 +116,18 @@ endif()
 target_include_directories(
     ${PROJECT_NAME}
     PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
-    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     PRIVATE
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 )
 
+# TODO
 # Configure dependencies related to platform.
-# TODO
 
-# Configure third-party dependencies.
 # TODO
+# Configure third-party dependencies.
 
 ###########
 # Install #
@@ -131,41 +136,41 @@ target_include_directories(
 install(
     TARGETS ${PROJECT_NAME}
     EXPORT  ${PROJECT_NAME}
-    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/@LIBNAME@" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-install(FILES "${CONFIG_HEADER_PATH}" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/@LIBNAME@")
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/licenses/${PROJECT_NAME}")
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/@LIBNAME@ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES ${CONFIG_HEADER_PATH} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/@LIBNAME@)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/licenses/${PROJECT_NAME})
 
 install(
     EXPORT ${PROJECT_NAME}
     FILE ${PROJECT_NAME}Targets.cmake
     NAMESPACE ${PROJECT_NAME}::
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
 configure_package_config_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
     PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR
-    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
 install(
     FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
 #################
@@ -174,5 +179,5 @@ install(
 
 option(@LIBNAME@_BUILD_EXAMPLE "Build example" ${@LIBNAME@_IS_MASTER_PROJECT})
 if(@LIBNAME@_BUILD_EXAMPLE)
-    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/example")
+    add_subdirectory(./example)
 endif()
