@@ -1,6 +1,7 @@
 #pragma once
 
 #include <qstring.h>
+#include <qmetatype.h>
 
 enum Language : int
 {
@@ -10,6 +11,8 @@ enum Language : int
     LANG_FIRST  = LANG_EN,
     LANG_LAST   = LANG_ZH
 };
+
+Q_DECLARE_METATYPE(Language)
 
 QString getLanguageStringId(Language lang);
 

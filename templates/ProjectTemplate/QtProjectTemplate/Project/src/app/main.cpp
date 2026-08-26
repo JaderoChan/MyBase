@@ -8,6 +8,8 @@
 
 int main(int argc, char* argv[])
 {
+    qRegisterMetaType<Language>("Language");
+
     // 设置程序全局属性
     QApplication a(argc, argv);
     a.setOrganizationDomain(APP_ORGANIZATION_DOMAIN);

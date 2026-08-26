@@ -48,8 +48,16 @@ set(PROJECT_SOURCES ${HEADERS} ${SRCS} ${UIS} ${QRC})
 # 构建程序 #
 ###########
 
-qt_standard_project_setup()
-qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+if(QT_VERSION_MAJOR GREATER_EQUAL 6)
+    qt_standard_project_setup()
+    qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+else()
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTOUIC ON)
+    set(CMAKE_AUTORCC ON)
+    set(CMAKE_INCLUDE_CURRENT_DIR ON)
+    add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+endif()
 
 ###########
 # 配置依赖 #
