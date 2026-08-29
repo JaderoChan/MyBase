@@ -19,12 +19,12 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 ###############
 
 include(FetchContent)
-set(3RDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
+set(3RDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty")
 
 # 配置 Easy Translate 库
 FetchContent_Declare(
     easy_translate
-    SOURCE_DIR ${3RDPARTY_DIR}/easy_translate
+    SOURCE_DIR "${3RDPARTY_DIR}/easy_translate"
 )
 FetchContent_MakeAvailable(easy_translate)
 
@@ -48,20 +48,20 @@ set(APP_COPYRIGHT_TEXT          "Copyright (c) 2026 JaderoChan")
 ###############
 
 # CMake 文件夹
-set(CMAKE_DIR                   ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_DIR                   "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # CMake 模板文件夹
-set(CMAKE_TEMPLATES_DIR         ${CMAKE_DIR}/templates)
+set(CMAKE_TEMPLATES_DIR         "${CMAKE_DIR}/templates")
 # 脚本文件夹路径
-set(SCRIPTS_DIR                 ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
+set(SCRIPTS_DIR                 "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
 # 语言文件夹路径
-set(LANGUAGES_DIR               ${CMAKE_CURRENT_SOURCE_DIR}/languages)
+set(LANGUAGES_DIR               "${CMAKE_CURRENT_SOURCE_DIR}/languages")
 # 资源文件夹路径
-set(RESOURCES_DIR               ${CMAKE_CURRENT_SOURCE_DIR}/resources)
+set(RESOURCES_DIR               "${CMAKE_CURRENT_SOURCE_DIR}/resources")
 # 应用图标文件夹路径
-set(APP_ICON_DIR                ${CMAKE_CURRENT_SOURCE_DIR}/icon)
+set(APP_ICON_DIR                "${CMAKE_CURRENT_SOURCE_DIR}/icon")
 
 # 重定向目标文件输出目录
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 
 #############
 # 添加子目录 #

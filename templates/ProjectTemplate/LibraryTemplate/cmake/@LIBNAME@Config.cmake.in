@@ -3,7 +3,7 @@
 include(CMakeFindDependencyMacro)
 # TODO: find_dependency
 
-include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake)
+include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake")
 
 set_and_check(@PROJECT_NAME@_INCLUDE_DIRS @PACKAGE_CMAKE_INSTALL_INCLUDEDIR@)
 set_and_check(@PROJECT_NAME@_LIBRARY_DIRS @PACKAGE_CMAKE_INSTALL_LIBDIR@)
