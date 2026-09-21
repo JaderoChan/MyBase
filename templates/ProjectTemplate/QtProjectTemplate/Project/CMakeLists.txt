@@ -63,4 +63,4 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 # 添加子目录 #
 #############
 
-add_subdirectory(./src)
+add_subdirectory("./src")
