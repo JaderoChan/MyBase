@@ -22,11 +22,7 @@ include(FetchContent)
 set(3RDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty")
 
 # 配置 Easy Translate 库
-FetchContent_Declare(
-    easy_translate
-    SOURCE_DIR "${3RDPARTY_DIR}/easy_translate"
-)
-FetchContent_MakeAvailable(easy_translate)
+add_subdirectory("${3RDPARTY_DIR}/easy_translate")
 
 ###############
 # 设置程序信息 #
