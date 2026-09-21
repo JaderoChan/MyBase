@@ -122,5 +122,5 @@ install(
 
 option(@LIBNAME@_BUILD_EXAMPLE "Build example" ${@LIBNAME@_IS_MASTER_PROJECT})
 if(@LIBNAME@_BUILD_EXAMPLE)
-    add_subdirectory(./example)
+    add_subdirectory("./example")
 endif()
