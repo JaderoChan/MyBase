@@ -1,13 +1,8 @@
 #include "trwidget.h"
 
-TrWidget::TrWidget(QWidget* parent)
-    : QWidget(parent)
-{
-    updateText();
-}
+TrWidget::TrWidget(QWidget* parent) : QWidget(parent) { updateText(); }
 
-void TrWidget::updateText()
-{}
+void TrWidget::updateText() {}
 
 void TrWidget::changeEvent(QEvent* event)
 {
@@ -16,14 +11,9 @@ void TrWidget::changeEvent(QEvent* event)
     QWidget::changeEvent(event);
 }
 
-TrMainWindow::TrMainWindow(QWidget* parent)
-    : QMainWindow(parent)
-{
-    updateText();
-}
+TrMainWindow::TrMainWindow(QWidget* parent) : QMainWindow(parent) { updateText(); }
 
-void TrMainWindow::updateText()
-{}
+void TrMainWindow::updateText(){}
 
 void TrMainWindow::changeEvent(QEvent* event)
 {
@@ -32,14 +22,9 @@ void TrMainWindow::changeEvent(QEvent* event)
     QMainWindow::changeEvent(event);
 }
 
-TrDialog::TrDialog(QWidget* parent)
-    : QDialog(parent)
-{
-    updateText();
-}
+TrDialog::TrDialog(QWidget* parent) : QDialog(parent) { updateText(); }
 
-void TrDialog::updateText()
-{}
+void TrDialog::updateText() {}
 
 void TrDialog::changeEvent(QEvent* event)
 {

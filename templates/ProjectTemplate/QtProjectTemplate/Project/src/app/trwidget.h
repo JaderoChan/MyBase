@@ -13,7 +13,6 @@ class TrWidget : public QWidget
 
 public:
     explicit TrWidget(QWidget* parent = nullptr);
-
     virtual void updateText();
 
 protected:
@@ -26,7 +25,6 @@ class TrMainWindow : public QMainWindow
 
 public:
     explicit TrMainWindow(QWidget* parent = nullptr);
-
     virtual void updateText();
 
 protected:
@@ -39,7 +37,6 @@ class TrDialog : public QDialog
 
 public:
     explicit TrDialog(QWidget* parent = nullptr);
-
     virtual void updateText();
 
 protected:
