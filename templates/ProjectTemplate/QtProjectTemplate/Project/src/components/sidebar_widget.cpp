@@ -768,7 +768,10 @@ void SidebarWidget::expand()
 {
     if (expanded_)
         return;
+
     expanded_ = true;
+    for (auto* entry : entries_)
+        entry->setExpanded(expanded_);
     animateWidthTo(expandedWidth_);
     emit expandedChanged(true);
 }
