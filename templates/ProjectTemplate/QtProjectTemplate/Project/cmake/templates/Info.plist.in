@@ -22,7 +22,7 @@
     <string>@APP_TITLE@</string>
 
     <key>CFBundleExecutable</key>
-    <string>@APP_TITLE@</string>
+    <string>@PROJECT_NAME@</string>
 
     <key>CFBundleVersion</key>
     <string>@APP_VERSION@</string>
