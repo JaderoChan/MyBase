@@ -49,6 +49,7 @@ set(PROJECT_SOURCES ${HEADERS} ${SRCS} ${UIS} "${QRC}")
 
 if(QT_VERSION_MAJOR GREATER_EQUAL 6)
     qt_standard_project_setup()
+    set(CMAKE_AUTORCC ON)
     qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 else()
     set(CMAKE_AUTOMOC ON)
