@@ -36,7 +36,7 @@ if not exist "%OUT_DIR%" (
 echo [INFO] Output name prefix: "%OUT_NAME%"
 echo [INFO] Generating PNG sizes: 16,32,64,128,256,512,1024
 for %%S in (16 32 64 128 256 512 1024) do (
-    magick "%SRC%" -resize %%Sx%%S -filter Lanczos -strip "%OUT_DIR%\%OUT_NAME%_%%S.png"
+    magick "%SRC%" -resize %%Sx%%S -filter Lanczos -alpha on -depth 8 -define png:color-type=6 -strip "%OUT_DIR%\%OUT_NAME%_%%S.png"
     if errorlevel 1 (
         echo [ERROR] Failed to generate %OUT_NAME%_%%S.png
         exit /b 1
@@ -47,13 +47,6 @@ echo [INFO] Generating ICO (16,24,32,48,64,128,256)
 magick "%SRC%" -define icon:auto-resize=16,24,32,48,64,128,256 "%OUT_DIR%\%OUT_NAME%.ico"
 if errorlevel 1 (
     echo [ERROR] Failed to generate %OUT_NAME%.ico
-    exit /b 1
-)
-
-echo [INFO] Generating ICNS (16,32,64,128,256,512,1024)
-magick "%SRC%" -define icon:auto-resize=16,32,64,128,256,512,1024 "%OUT_DIR%\%OUT_NAME%.icns"
-if errorlevel 1 (
-    echo [ERROR] Failed to generate %OUT_NAME%.icns
     exit /b 1
 )
 

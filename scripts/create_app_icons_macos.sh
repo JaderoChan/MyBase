@@ -33,6 +33,12 @@ if ! command -v magick >/dev/null 2>&1; then
   exit 1
 fi
 
+# Check iconutil
+if ! command -v iconutil >/dev/null 2>&1; then
+  echo "[ERROR] \"iconutil\" not found. This script requires macOS."
+  exit 1
+fi
+
 # Create output directory
 if ! mkdir -p "$OUT_DIR"; then
   echo "[ERROR] Failed to create output directory: \"$OUT_DIR\""
@@ -42,7 +48,7 @@ fi
 echo "[INFO] Output name prefix: \"$OUT_NAME\""
 echo "[INFO] Generating PNG sizes: 16,32,64,128,256,512,1024"
 for S in 16 32 64 128 256 512 1024; do
-  if ! magick "$SRC" -resize "${S}x${S}" -filter Lanczos -strip "$OUT_DIR/${OUT_NAME}_${S}.png"; then
+  if ! magick "$SRC" -resize "${S}x${S}" -filter Lanczos -alpha on -depth 8 -define png:color-type=6 -strip "$OUT_DIR/${OUT_NAME}_${S}.png"; then
     echo "[ERROR] Failed to generate ${OUT_NAME}_${S}.png"
     exit 1
   fi
@@ -55,10 +61,29 @@ if ! magick "$SRC" -define icon:auto-resize=16,24,32,48,64,128,256 "$OUT_DIR/${O
 fi
 
 echo "[INFO] Generating ICNS (16,32,64,128,256,512,1024)"
-if ! magick "$SRC" -define icon:auto-resize=16,32,64,128,256,512,1024 "$OUT_DIR/${OUT_NAME}.icns"; then
-  echo "[ERROR] Failed to generate ${OUT_NAME}.icns"
+# Build a proper .iconset and hand it to Apple's own iconutil converter,
+# since only iconutil produces an icns that fully conforms to Apple's spec.
+ICONSET_DIR="$OUT_DIR/${OUT_NAME}.iconset"
+if ! mkdir -p "$ICONSET_DIR"; then
+  echo "[ERROR] Failed to create iconset directory: \"$ICONSET_DIR\""
   exit 1
 fi
+cp "$OUT_DIR/${OUT_NAME}_16.png" "$ICONSET_DIR/icon_16x16.png"
+cp "$OUT_DIR/${OUT_NAME}_32.png" "$ICONSET_DIR/icon_16x16@2x.png"
+cp "$OUT_DIR/${OUT_NAME}_32.png" "$ICONSET_DIR/icon_32x32.png"
+cp "$OUT_DIR/${OUT_NAME}_64.png" "$ICONSET_DIR/icon_32x32@2x.png"
+cp "$OUT_DIR/${OUT_NAME}_128.png" "$ICONSET_DIR/icon_128x128.png"
+cp "$OUT_DIR/${OUT_NAME}_256.png" "$ICONSET_DIR/icon_128x128@2x.png"
+cp "$OUT_DIR/${OUT_NAME}_256.png" "$ICONSET_DIR/icon_256x256.png"
+cp "$OUT_DIR/${OUT_NAME}_512.png" "$ICONSET_DIR/icon_256x256@2x.png"
+cp "$OUT_DIR/${OUT_NAME}_512.png" "$ICONSET_DIR/icon_512x512.png"
+cp "$OUT_DIR/${OUT_NAME}_1024.png" "$ICONSET_DIR/icon_512x512@2x.png"
+if ! iconutil --convert icns --output "$OUT_DIR/${OUT_NAME}.icns" "$ICONSET_DIR"; then
+  echo "[ERROR] Failed to generate ${OUT_NAME}.icns"
+  rm -rf "$ICONSET_DIR"
+  exit 1
+fi
+rm -rf "$ICONSET_DIR"
 
 echo "[OK] Done"
 echo "[OK] Output directory: \"$OUT_DIR\""
