@@ -17,7 +17,9 @@ set(HEADERS
     ./app/language_manager.h
     ./app/logo_icon.h
     ./app/settings.h
-    ./app/trwidget.h
+    ./components/flow_grid_layout.h
+    ./components/sidebar_widget.h
+    ./components/trwidget.h
     ./utils/debug_output.h
     ./utils/directory_scope.h
     ./utils/file_io.h
@@ -31,7 +33,9 @@ set(SRCS
     ./app/logo_icon.cpp
     ./app/main.cpp
     ./app/settings.cpp
-    ./app/trwidget.cpp
+    ./components/flow_grid_layout.cpp
+    ./components/sidebar_widget.cpp
+    ./components/trwidget.cpp
 )
 
 # UI 文件
