@@ -11,13 +11,14 @@ configure_file(
 
 # TODO
 # 头文件（可用于在 Visual Studio 等 IDE 的项目文件树中显示头文件）
-set(HEADERS
+set(
+    HEADERS
     "${CMAKE_CURRENT_BINARY_DIR}/include/config.h"
-    ./app/color_scheme_manager.h
-    ./app/language_manager.h
     ./app/logo_icon.h
     ./app/settings.h
+    ./components/color_scheme_manager.h
     ./components/flow_grid_layout.h
+    ./components/language_manager.h
     ./components/sidebar_widget.h
     ./components/trwidget.h
     ./utils/debug_output.h
@@ -27,19 +28,21 @@ set(HEADERS
 )
 
 # 源文件
-set(SRCS
-    ./app/color_scheme_manager.cpp
-    ./app/language_manager.cpp
+set(
+    SRCS
     ./app/logo_icon.cpp
     ./app/main.cpp
     ./app/settings.cpp
+    ./components/color_scheme_manager.cpp
     ./components/flow_grid_layout.cpp
+    ./components/language_manager.cpp
     ./components/sidebar_widget.cpp
     ./components/trwidget.cpp
 )
 
 # UI 文件
-set(UIS
+set(
+    UIS
 )
 
 # QRC 文件
