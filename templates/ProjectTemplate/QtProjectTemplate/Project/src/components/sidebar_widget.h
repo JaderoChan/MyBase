@@ -6,7 +6,6 @@
 #include <qvector.h>
 #include <qwidget.h>
 
-class QEvent;
 class QVBoxLayout;
 class QVariantAnimation;
 class SidebarEntryWidget;
@@ -75,9 +74,6 @@ public slots:
 signals:
     void currentIndexChanged(int index);
     void expandedChanged(bool expanded);
-
-protected:
-    bool event(QEvent* e) override;
 
 private:
     void updateToggleIcon();
