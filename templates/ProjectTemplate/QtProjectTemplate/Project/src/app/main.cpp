@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
     // 启用长按键重复功能。
     QSettings(QSettings::NativeFormat, QSettings::UserScope, QStringLiteral(APP_BUNDLE_IDENTIFIER))
         .setValue(QStringLiteral("ApplePressAndHoldEnabled"), false);
-#endif
+#endif // Q_OS_MAC
 
     // 设置语言
     {
