@@ -19,8 +19,8 @@ set(
     ./components/color_scheme_manager.h
     ./components/flow_grid_layout.h
     ./components/language_manager.h
+    ./components/mywidget.h
     ./components/sidebar_widget.h
-    ./components/trwidget.h
     ./utils/debug_output.h
     ./utils/directory_scope.h
     ./utils/file_io.h
@@ -36,8 +36,8 @@ set(
     ./components/color_scheme_manager.cpp
     ./components/flow_grid_layout.cpp
     ./components/language_manager.cpp
+    ./components/mywidget.cpp
     ./components/sidebar_widget.cpp
-    ./components/trwidget.cpp
 )
 
 # UI 文件
