@@ -1,5 +1,7 @@
 #include <qapplication.h>
+#include <qfont.h>
 #include <qsettings.h>
+#include <qstringlist.h>
 
 #include <easy_translate.hpp>
 
@@ -25,6 +27,25 @@ int main(int argc, char* argv[])
     QSettings(QSettings::NativeFormat, QSettings::UserScope, QStringLiteral(APP_BUNDLE_IDENTIFIER))
         .setValue(QStringLiteral("ApplePressAndHoldEnabled"), false);
 #endif // Q_OS_MAC
+
+    // 设置字体
+    {
+        QFont       font;
+        QStringList families;
+
+    #ifdef Q_OS_WIN
+        families << "Microsoft YaHei" << "SimHei";
+    #elif defined(Q_OS_MACOS)
+        families << "PingFang SC" << "Heiti SC";
+    #else
+        families << "Noto Sans CJK SC" << "WenQuanYi Micro Hei";
+    #endif // Q_OS_WIN
+
+        families << "Arial" << "sans-serif";
+
+        font.setFamilies(families);
+        a.setFont(font);
+    }
 
     // 设置语言
     {
