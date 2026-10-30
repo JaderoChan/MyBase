@@ -31,5 +31,5 @@ ConfigurationData& getAppConfiguration()
 
 void setAppConfiguration(ConfigurationData config)
 {
-    appConfiguration() = std::move(config);
+    getAppConfiguration() = std::move(config);
 }
