@@ -13,14 +13,18 @@ configure_file(
 # 头文件（可用于在 Visual Studio 等 IDE 的项目文件树中显示头文件）
 set(
     HEADERS
+
     "${CMAKE_CURRENT_BINARY_DIR}/include/config.h"
+
     ./app/logo_icon.h
     ./app/settings.h
+
+    ./components/adaptive_widget.h
     ./components/color_scheme_manager.h
     ./components/flow_grid_layout.h
     ./components/language_manager.h
-    ./components/mywidget.h
     ./components/sidebar_widget.h
+
     ./utils/debug_output.h
     ./utils/directory_scope.h
     ./utils/file_io.h
@@ -30,13 +34,15 @@ set(
 # 源文件
 set(
     SRCS
+
     ./app/logo_icon.cpp
     ./app/main.cpp
     ./app/settings.cpp
+
+    ./components/adaptive_widget.cpp
     ./components/color_scheme_manager.cpp
     ./components/flow_grid_layout.cpp
     ./components/language_manager.cpp
-    ./components/mywidget.cpp
     ./components/sidebar_widget.cpp
 )
 
