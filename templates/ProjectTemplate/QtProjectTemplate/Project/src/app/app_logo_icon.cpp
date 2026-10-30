@@ -1,4 +1,4 @@
-#include "logo_icon.h"
+#include "app_logo_icon.h"
 
 static QIcon createAppLogoIcon()
 {
