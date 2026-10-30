@@ -2,10 +2,10 @@
 # 收集源文件 #
 #############
 
-# 配置 config 头文件。
+# 配置 app_defines 头文件。
 configure_file(
-    "${CMAKE_TEMPLATES_DIR}/config.h.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/include/config.h"
+    "${CMAKE_TEMPLATES_DIR}/app_defines.h.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/app_defines.h"
     @ONLY
 )
 
@@ -14,10 +14,10 @@ configure_file(
 set(
     HEADERS
 
-    "${CMAKE_CURRENT_BINARY_DIR}/include/config.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/app_defines.h"
 
-    ./app/logo_icon.h
-    ./app/settings.h
+    ./app/app_configuration.h
+    ./app/app_logo_icon.h
 
     ./components/adaptive_widget.h
     ./components/color_scheme_manager.h
@@ -35,9 +35,9 @@ set(
 set(
     SRCS
 
-    ./app/logo_icon.cpp
+    ./app/app_configuration.cpp
+    ./app/app_logo_icon.cpp
     ./app/main.cpp
-    ./app/settings.cpp
 
     ./components/adaptive_widget.cpp
     ./components/color_scheme_manager.cpp
