@@ -47,12 +47,13 @@ int main(int argc, char* argv[])
         a.setFont(font);
     }
 
-    // 加载程序设置。
-    setAppConfiguration(loadConfiguration());
-
-    // 设置语言与色彩主题。
-    LanguageManager::instance().setLanguage(getAppConfiguration().language);
-    ColorSchemeManager::instance().setColorScheme(getAppConfiguration().colorScheme);
+    {
+        // 加载程序设置。
+        const auto& config = AppConfiguration::instance();
+        // 设置语言与色彩主题。
+        LanguageManager::instance().setLanguage(config.language);
+        ColorSchemeManager::instance().setColorScheme(config.colorScheme);
+    }
 
     // TODO
 

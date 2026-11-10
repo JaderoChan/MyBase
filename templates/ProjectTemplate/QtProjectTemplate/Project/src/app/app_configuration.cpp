@@ -1,41 +1,51 @@
 #include "app_configuration.h"
 
 #include <qsettings.h>
+#include <qtimer.h>
 
-ConfigurationData loadConfiguration()
+#include <utils/debug_output.h>
+
+AppConfiguration::AppConfiguration()
+    : QObject(nullptr)
 {
-    ConfigurationData config;
-    QSettings         qsettings;
-
-    config.colorScheme = qsettings.value(QStringLiteral("ColorScheme"), ColorSchemeManager::COLOR_SCHEME_AUTO)
-        .value<ColorSchemeManager::ColorScheme>();
-    config.language    = qsettings.value(QStringLiteral("Language"),    LanguageManager::LANGUAGE_AUTO)
-        .value<LanguageManager::Language>();
-
-    return config;
+    timer_ = new QTimer(this);
+    timer_->setSingleShot(true);
+    connect(timer_, &QTimer::timeout, this, &AppConfiguration::save);
+    reload();
 }
 
-void saveConfiguration(const ConfigurationData& config)
+AppConfiguration::~AppConfiguration()
+{
+    save();
+}
+
+AppConfiguration& AppConfiguration::instance()
+{
+    static AppConfiguration data;
+    return data;
+}
+
+void AppConfiguration::reload()
 {
     QSettings qsettings;
 
-    qsettings.setValue(QStringLiteral("ColorScheme"), config.colorScheme);
-    qsettings.setValue(QStringLiteral("Language"),    config.language);
+    colorScheme = qsettings
+        .value(QStringLiteral("ColorScheme"), ColorSchemeManager::COLOR_SCHEME_AUTO)
+        .value<ColorSchemeManager::ColorScheme>();
+    language    = qsettings
+        .value(QStringLiteral("Language"),    LanguageManager::LANGUAGE_AUTO)
+        .value<LanguageManager::Language>();
 }
 
-static ConfigurationData AppConfig;
-
-const ConfigurationData& getAppConfiguration()
+void AppConfiguration::save() const
 {
-    return AppConfig;
+    QSettings qsettings;
+
+    qsettings.setValue(QStringLiteral("ColorScheme"), colorScheme);
+    qsettings.setValue(QStringLiteral("Language"),    language);
 }
 
-ConfigurationData& getAppConfigurationRef()
+void AppConfiguration::saveLater(int delayMs) const
 {
-    return AppConfig;
-}
-
-void setAppConfiguration(ConfigurationData config)
-{
-    AppConfig = std::move(config);
+    timer_->start(delayMs);
 }
