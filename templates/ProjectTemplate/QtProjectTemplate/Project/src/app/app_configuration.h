@@ -39,3 +39,5 @@ private:
     mutable int saveLaterGroups_ = 0;
     QTimer*     timer_;
 };
+
+#define appConfig AppConfiguration::instance()
