@@ -11,18 +11,31 @@ class AppConfiguration : public QObject
     Q_OBJECT
 
 public:
+    enum ConfigGroup : int
+    {
+        MainGroup = 0x0001,
+        AllGroup  = 0xFFFF
+    };
+
     static AppConfiguration& instance();
 
     void reload();
-    void save() const;
-    void saveLater(int delayMs) const;
+    void save(int groups = AllGroup) const;
+    void saveLater(int groups = AllGroup, int delayMs = 3000) const;
 
-    ColorSchemeManager::ColorScheme colorScheme;
-    LanguageManager::Language       language;
+    struct
+    {
+        ColorSchemeManager::ColorScheme colorScheme;
+        LanguageManager::Language       language;
+    } mainGroup;
 
 private:
     AppConfiguration();
     ~AppConfiguration();
 
-    QTimer* timer_;
+    static inline bool hasGroup(int groups, ConfigGroup group)
+    { return (groups & group) != 0; }
+
+    mutable int saveLaterGroups_ = 0;
+    QTimer*     timer_;
 };

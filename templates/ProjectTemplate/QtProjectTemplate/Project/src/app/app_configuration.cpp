@@ -10,7 +10,12 @@ AppConfiguration::AppConfiguration()
 {
     timer_ = new QTimer(this);
     timer_->setSingleShot(true);
-    connect(timer_, &QTimer::timeout, this, &AppConfiguration::save);
+    connect(timer_, &QTimer::timeout, this, [this]()
+    {
+        save(saveLaterGroups_);
+        saveLaterGroups_ = 0;
+    });
+
     reload();
 }
 
@@ -21,31 +26,34 @@ AppConfiguration::~AppConfiguration()
 
 AppConfiguration& AppConfiguration::instance()
 {
-    static AppConfiguration data;
-    return data;
+    static AppConfiguration instance;
+    return instance;
 }
 
 void AppConfiguration::reload()
 {
     QSettings qsettings;
 
-    colorScheme = qsettings
+    mainGroup.colorScheme = qsettings
         .value(QStringLiteral("ColorScheme"), ColorSchemeManager::COLOR_SCHEME_AUTO)
         .value<ColorSchemeManager::ColorScheme>();
-    language    = qsettings
+    mainGroup.language    = qsettings
         .value(QStringLiteral("Language"),    LanguageManager::LANGUAGE_AUTO)
         .value<LanguageManager::Language>();
 }
 
-void AppConfiguration::save() const
+void AppConfiguration::save(int groups) const
 {
-    QSettings qsettings;
-
-    qsettings.setValue(QStringLiteral("ColorScheme"), colorScheme);
-    qsettings.setValue(QStringLiteral("Language"),    language);
+    if (hasGroup(groups, MainGroup))
+    {
+        QSettings qsettings;
+        qsettings.setValue(QStringLiteral("ColorScheme"), mainGroup.colorScheme);
+        qsettings.setValue(QStringLiteral("Language"),    mainGroup.language);
+    }
 }
 
-void AppConfiguration::saveLater(int delayMs) const
+void AppConfiguration::saveLater(int groups, int delayMs) const
 {
+    saveLaterGroups_ |= groups;
     timer_->start(delayMs);
 }
