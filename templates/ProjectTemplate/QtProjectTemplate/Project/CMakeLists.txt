@@ -32,6 +32,7 @@ add_subdirectory("${3RDPARTY_DIR}/easy_translate")
 
 set(APP_ORGANIZATION            "JaderoChan")
 set(APP_ORGANIZATION_DOMAIN     "io.github.jaderochan")
+set(APP_PACKAGE_NAME            "${APP_ORGANIZATION_DOMAIN}.${PROJECT_NAME}")
 set(APP_TITLE                   "${PROJECT_NAME}")
 set(APP_VERSION_MAJOR           ${PROJECT_VERSION_MAJOR})
 set(APP_VERSION_MINOR           ${PROJECT_VERSION_MINOR})

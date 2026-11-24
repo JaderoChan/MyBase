@@ -107,11 +107,12 @@ if(WIN32)
     )
 endif()
 
-# 程序退出后自动更新语言文件的翻译ID列表。（开发时使用，用于提取翻译ID）
-option(UPDATE_TRANSLATION_MAPPING_FILE "Update the translation mapping files. Only for dev dump Text ID list." OFF)
+# 程序退出时是否提取翻译ID列表。
+option(DUMP_TRANSLATION_ID "Dump all translation IDs to temp file." OFF)
 target_compile_definitions(
     ${PROJECT_NAME} PRIVATE
-    $<$<BOOL:${UPDATE_TRANSLATION_MAPPING_FILE}>:EASY_TRANSLATE_UPDATE_TRANSLATION_MAPPING_FILE>
+    $<$<BOOL:${DUMP_TRANSLATION_ID}>:EASY_TRANSLATE_COLLECT_TRANSLATION_ID>
+    $<$<BOOL:${DUMP_TRANSLATION_ID}>:DUMP_TRANSLATION_ID>
 )
 
 # 配置应用资源/属性。
@@ -190,16 +191,79 @@ elseif(APPLE)
         MACOSX_BUNDLE ON
         MACOSX_BUNDLE_INFO_PLIST "${MACOSX_BUNDLE_INFO_PLIST}"
     )
-
-    # 语言文件
-    file(GLOB LANG_FILES CONFIGURE_DEPENDS "${LANGUAGES_DIR}/*")
-    set_source_files_properties(
-        ${LANG_FILES} PROPERTIES
-        MACOSX_PACKAGE_LOCATION "Resources/languages"
-    )
-    target_sources(${PROJECT_NAME} PRIVATE ${LANG_FILES})
 elseif(LINUX)
-    # TODO
+    # Linux
+    set(APP_ICON "${APP_ICON_DIR}/app.png")
+
+    # 配置桌面入口文件。
+    set(APP_DESKTOP_FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.desktop")
+    configure_file(
+        "${CMAKE_TEMPLATES_DIR}/app.desktop.in"
+        "${APP_DESKTOP_FILE}"
+        @ONLY
+    )
+
+    # 复制桌面入口文件至目标目录。
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${APP_DESKTOP_FILE}" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.desktop"
+    )
+
+    # 复制图标至目标目录。
+    configure_file("${APP_ICON}" "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.png" COPYONLY)
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.png" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.png"
+    )
+
+    # 按 hicolor 图标主题规范复制各分辨率图标。
+    file(GLOB APP_ICON_PNGS CONFIGURE_DEPENDS "${RESOURCES_DIR}/icons/app/*.png")
+    foreach(APP_ICON_PNG IN LISTS APP_ICON_PNGS)
+        get_filename_component(APP_ICON_PNG_NAME_WE "${APP_ICON_PNG}" NAME_WE)
+        string(REGEX MATCH "([0-9]+)$" APP_ICON_SIZE "${APP_ICON_PNG_NAME_WE}")
+        if(APP_ICON_SIZE)
+            set(APP_ICON_THEME_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>/icons/hicolor/${APP_ICON_SIZE}x${APP_ICON_SIZE}/apps")
+            add_custom_command(
+                TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory "${APP_ICON_THEME_DIR}"
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${APP_ICON_PNG}" "${APP_ICON_THEME_DIR}/${PROJECT_NAME}.png"
+            )
+        endif()
+    endforeach()
+elseif(ANDROID)
+    # Android
+    set(APP_ANDROID_MIN_SDK_VERSION    26 CACHE STRING "Android minimum SDK version.")
+    set(APP_ANDROID_TARGET_SDK_VERSION 36 CACHE STRING "Android target SDK version.")
+
+    math(EXPR APP_ANDROID_VERSION_CODE "${APP_VERSION_MAJOR} * 10000 + ${APP_VERSION_MINOR} * 100 + ${APP_VERSION_PATCH}")
+
+    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android")
+
+    # 配置清单文件与应用名称字符串资源。
+    configure_file(
+        "${CMAKE_TEMPLATES_DIR}/android/AndroidManifest.xml.in"
+        "${ANDROID_PACKAGE_SOURCE_DIR}/AndroidManifest.xml"
+        @ONLY
+    )
+    configure_file(
+        "${CMAKE_TEMPLATES_DIR}/android/strings.xml.in"
+        "${ANDROID_PACKAGE_SOURCE_DIR}/res/values/strings.xml"
+        @ONLY
+    )
+
+    # 复制图标至各密度 mipmap 目录。
+    set(APP_ANDROID_ICON_RES_DIR "${APP_ICON_DIR}/android/res")
+    if(NOT EXISTS "${APP_ANDROID_ICON_RES_DIR}")
+        message(FATAL_ERROR "Android icons not found: \"${APP_ANDROID_ICON_RES_DIR}\".")
+    endif()
+    file(COPY "${APP_ANDROID_ICON_RES_DIR}/" DESTINATION "${ANDROID_PACKAGE_SOURCE_DIR}/res")
+
+    set_target_properties(
+        ${PROJECT_NAME} PROPERTIES
+        QT_ANDROID_PACKAGE_SOURCE_DIR "${ANDROID_PACKAGE_SOURCE_DIR}"
+    )
 else()
     message(FATAL_ERROR "Unsupported platform.")
 endif()
@@ -216,15 +280,6 @@ if(WIN32)
         $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
         "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
         COMMAND_EXPAND_LISTS
-    )
-endif()
-
-# 复制语言文件至目标目录。
-if(WIN32 OR LINUX)
-    add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
-        "${LANGUAGES_DIR}" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/languages"
     )
 endif()
 
@@ -246,7 +301,14 @@ if(DEPLOYQT_AFTER_BUILD)
             -codesign=-
         )
     elseif(LINUX)
-        # TODO
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND linuxdeployqt
+            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.desktop"
+            -always-overwrite
+        )
+    elseif(ANDROID)
+        # Android 的 Qt 依赖部署由 Qt 的 CMake Android 集成在构建流程中自动完成。
     else()
         message(FATAL_ERROR "Unsupported platform.")
     endif()
@@ -261,5 +323,16 @@ if(APPLE AND CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CREATE_DMG)
         ${PROJECT_NAME}
         "${APP_ICON}"
         "$<PATH:GET_PARENT_PATH,$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>>"
+    )
+endif()
+
+# Linux AppImage 打包
+option(CREATE_APPIMAGE "Create AppImage for Linux, linuxdeployqt is required." OFF)
+if(LINUX AND CREATE_APPIMAGE)
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND linuxdeployqt
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.desktop"
+        -appimage
     )
 endif()

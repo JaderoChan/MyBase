@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=@APP_TITLE@
+GenericName=@APP_TITLE@
+Comment=@APP_TITLE@
+Exec=@PROJECT_NAME@
+Icon=@PROJECT_NAME@
+Terminal=false
+Categories=Utility;
+StartupWMClass=@PROJECT_NAME@

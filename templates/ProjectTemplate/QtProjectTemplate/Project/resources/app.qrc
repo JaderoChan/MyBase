@@ -7,5 +7,8 @@
         <file>icons/app/app_256.png</file>
         <file>icons/app/app_512.png</file>
         <file>icons/app/app_1024.png</file>
+        <file>languages/language_mapping.json</file>
+        <file>languages/en.json</file>
+        <file>languages/zh.json</file>
     </qresource>
 </RCC>

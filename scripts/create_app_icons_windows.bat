@@ -50,6 +50,46 @@ if errorlevel 1 (
     exit /b 1
 )
 
+echo [INFO] Generating Android launcher icons (mipmap-mdpi/hdpi/xhdpi/xxhdpi/xxxhdpi)
+set "ANDROID_RES_DIR=%OUT_DIR%\android\res"
+if not exist "%ANDROID_RES_DIR%\mipmap-mdpi" mkdir "%ANDROID_RES_DIR%\mipmap-mdpi"
+magick "%SRC%" -resize 48x48 -filter Lanczos -alpha on -depth 8 -define png:color-type=6 -strip "%ANDROID_RES_DIR%\mipmap-mdpi\ic_launcher.png"
+if errorlevel 1 (
+    echo [ERROR] Failed to generate mipmap-mdpi/ic_launcher.png
+    exit /b 1
+)
+if not exist "%ANDROID_RES_DIR%\mipmap-hdpi" mkdir "%ANDROID_RES_DIR%\mipmap-hdpi"
+magick "%SRC%" -resize 72x72 -filter Lanczos -alpha on -depth 8 -define png:color-type=6 -strip "%ANDROID_RES_DIR%\mipmap-hdpi\ic_launcher.png"
+if errorlevel 1 (
+    echo [ERROR] Failed to generate mipmap-hdpi/ic_launcher.png
+    exit /b 1
+)
+if not exist "%ANDROID_RES_DIR%\mipmap-xhdpi" mkdir "%ANDROID_RES_DIR%\mipmap-xhdpi"
+magick "%SRC%" -resize 96x96 -filter Lanczos -alpha on -depth 8 -define png:color-type=6 -strip "%ANDROID_RES_DIR%\mipmap-xhdpi\ic_launcher.png"
+if errorlevel 1 (
+    echo [ERROR] Failed to generate mipmap-xhdpi/ic_launcher.png
+    exit /b 1
+)
+if not exist "%ANDROID_RES_DIR%\mipmap-xxhdpi" mkdir "%ANDROID_RES_DIR%\mipmap-xxhdpi"
+magick "%SRC%" -resize 144x144 -filter Lanczos -alpha on -depth 8 -define png:color-type=6 -strip "%ANDROID_RES_DIR%\mipmap-xxhdpi\ic_launcher.png"
+if errorlevel 1 (
+    echo [ERROR] Failed to generate mipmap-xxhdpi/ic_launcher.png
+    exit /b 1
+)
+if not exist "%ANDROID_RES_DIR%\mipmap-xxxhdpi" mkdir "%ANDROID_RES_DIR%\mipmap-xxxhdpi"
+magick "%SRC%" -resize 192x192 -filter Lanczos -alpha on -depth 8 -define png:color-type=6 -strip "%ANDROID_RES_DIR%\mipmap-xxxhdpi\ic_launcher.png"
+if errorlevel 1 (
+    echo [ERROR] Failed to generate mipmap-xxxhdpi/ic_launcher.png
+    exit /b 1
+)
+
+echo [INFO] Generating Android Play Store listing icon (512x512)
+magick "%SRC%" -resize 512x512 -filter Lanczos -alpha on -depth 8 -define png:color-type=6 -strip "%OUT_DIR%\android\playstore-icon.png"
+if errorlevel 1 (
+    echo [ERROR] Failed to generate playstore-icon.png
+    exit /b 1
+)
+
 echo [OK] Done
 echo [OK] Output directory: "%OUT_DIR%"
 exit /b 0

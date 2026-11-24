@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
     a.setWindowIcon(getAppLogoIcon());
 #else
     // 启用长按键重复功能。
-    QSettings(QSettings::NativeFormat, QSettings::UserScope, QStringLiteral(APP_BUNDLE_IDENTIFIER))
+    QSettings(QSettings::NativeFormat, QSettings::UserScope, QStringLiteral(APP_PACKAGE_NAME))
         .setValue(QStringLiteral("ApplePressAndHoldEnabled"), false);
 #endif // Q_OS_MAC
 
@@ -51,16 +51,17 @@ int main(int argc, char* argv[])
         // 加载程序设置。
         const auto& config = AppConfiguration::instance();
         // 设置语言与色彩主题。
-        LanguageManager::instance().setLanguage(config.language);
-        ColorSchemeManager::instance().setColorScheme(config.colorScheme);
+        LanguageManager::instance().setLanguage(config.mainGroup.language);
+        ColorSchemeManager::instance().setColorScheme(config.mainGroup.colorScheme);
     }
 
     // TODO
 
     int ret = a.exec();
 
-    // 更新翻译文件（实际上由编译选项 UPDATE_TRANSLATION_MAPPING_FILE 决定是否真正更新）。
-    easytr::updateTranslationMappingFile();
+#ifdef DUMP_TRANSLATION_ID
+    easytr::dumpCollectedTranslationIds("./TranslationIds.json");
+#endif // DUMP_TRANSLATION_ID
 
     return ret;
 }

@@ -16,7 +16,7 @@
     <string>app.icns</string>
 
     <key>CFBundleIdentifier</key>
-    <string>@APP_ORGANIZATION_DOMAIN@.@PROJECT_NAME@</string>
+    <string>@APP_PACKAGE_NAME@</string>
 
     <key>CFBundleName</key>
     <string>@APP_TITLE@</string>

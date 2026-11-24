@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="@APP_PACKAGE_NAME@"
+    android:versionName="@APP_VERSION@"
+    android:versionCode="@APP_ANDROID_VERSION_CODE@"
+    android:installLocation="auto">
+
+    <application
+        android:name="org.qtproject.qt.android.bindings.QtApplication"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:extractNativeLibs="true"
+        android:allowBackup="true">
+
+        <activity
+            android:name="org.qtproject.qt.android.bindings.QtActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="unspecified"
+            android:launchMode="singleTop"
+            android:exported="true"
+            android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|density">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data android:name="android.app.lib_name" android:value="-- %%INSERT_APP_LIB_NAME%% --" />
+        </activity>
+    </application>
+
+    <uses-sdk
+        android:minSdkVersion="@APP_ANDROID_MIN_SDK_VERSION@"
+        android:targetSdkVersion="@APP_ANDROID_TARGET_SDK_VERSION@" />
+
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:anyDensity="true"
+        android:smallScreens="true" />
+
+    <!-- %%INSERT_PERMISSIONS -->
+    <!-- %%INSERT_FEATURES -->
+
+</manifest>

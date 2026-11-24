@@ -7,7 +7,17 @@
 
 #include <app_defines.h>
 #include <utils/debug_output.h>
-#include <utils/directory_scope.h>
+#include <utils/file_io.h>
+
+namespace
+{
+
+easytr::TranslationMapping translationMappingLoader(const std::string& filePath)
+{
+    return easytr::TranslationMapping::fromJson(readFileContent(QString::fromStdString(filePath)).toStdString());
+}
+
+} // namespace
 
 LanguageManager& LanguageManager::instance()
 {
@@ -86,20 +96,20 @@ LanguageManager::LanguageManager()
     qApp->installEventFilter(this);
     language_       = LANGUAGE_AUTO;
     loadedLanguage_ = systemLanguage();
-    loadLanguage();
-}
 
-void LanguageManager::loadLanguage()
-{
-    DirectoryScope dirScope(APP_RESOURCES_DIRPATH);
-
-    easytr::setLanguageMapping(easytr::LanguageMapping::fromFile(APP_LANGMAP_FILEPATH));
+    easytr::setTranslationMappingLoader(&translationMappingLoader);
+    const auto json = readFileContent(APP_LANGMAP_FILEPATH).toStdString();
+    easytr::setLanguageMapping(easytr::LanguageMapping::fromJson(json.c_str()));
     if (easytr::languageMapping().empty())
     {
         debugOut(qWarning(), "[LanguageManager] Failed to load language mapping or language mapping is empty.");
         return;
     }
+    loadLanguage();
+}
 
+void LanguageManager::loadLanguage()
+{
     const auto id = languageId(loadedLanguage_).toStdString();
     if (!easytr::hasLanguage(id))
     {

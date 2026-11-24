@@ -54,6 +54,27 @@ if ! magick "$SRC" -define icon:auto-resize=16,24,32,48,64,128,256 "$OUT_DIR/${O
   exit 1
 fi
 
+echo "[INFO] Generating Android launcher icons (mipmap-mdpi/hdpi/xhdpi/xxhdpi/xxxhdpi)"
+for ENTRY in "mdpi:48" "hdpi:72" "xhdpi:96" "xxhdpi:144" "xxxhdpi:192"; do
+  DENSITY="${ENTRY%%:*}"
+  S="${ENTRY##*:}"
+  MIPMAP_DIR="$OUT_DIR/android/res/mipmap-$DENSITY"
+  if ! mkdir -p "$MIPMAP_DIR"; then
+    echo "[ERROR] Failed to create directory: \"$MIPMAP_DIR\""
+    exit 1
+  fi
+  if ! magick "$SRC" -resize "${S}x${S}" -filter Lanczos -alpha on -depth 8 -define png:color-type=6 -strip "$MIPMAP_DIR/ic_launcher.png"; then
+    echo "[ERROR] Failed to generate mipmap-$DENSITY/ic_launcher.png"
+    exit 1
+  fi
+done
+
+echo "[INFO] Generating Android Play Store listing icon (512x512)"
+if ! magick "$SRC" -resize 512x512 -filter Lanczos -alpha on -depth 8 -define png:color-type=6 -strip "$OUT_DIR/android/playstore-icon.png"; then
+  echo "[ERROR] Failed to generate playstore-icon.png"
+  exit 1
+fi
+
 echo "[OK] Done"
 echo "[OK] Output directory: \"$OUT_DIR\""
 exit 0
