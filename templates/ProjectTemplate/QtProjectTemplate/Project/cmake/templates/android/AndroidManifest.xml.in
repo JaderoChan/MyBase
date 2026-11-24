@@ -29,10 +29,6 @@
         </activity>
     </application>
 
-    <uses-sdk
-        android:minSdkVersion="@APP_ANDROID_MIN_SDK_VERSION@"
-        android:targetSdkVersion="@APP_ANDROID_TARGET_SDK_VERSION@" />
-
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
